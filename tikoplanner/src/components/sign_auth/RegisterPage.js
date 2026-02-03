@@ -1,243 +1,216 @@
-import React, { useState } from 'react';
-import {
-    View,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    StyleSheet,
-    Image,
-    Dimensions,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { IoPersonOutline, IoMailOutline, IoLockClosedOutline, IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
-const { width } = Dimensions.get('window');
-
-export default function RegisterScreen() {
-    const [showPassword, setShowPassword] = useState(false);
-    const navigation = useNavigation(); // ✅ THÊM DÒNG NÀY
-
-    return (
-        <View style={styles.container}>
-            {/* ===== HEADER ===== */}
-            <View style={styles.header}>
-                <View style={styles.logoWrapper}>
-                    <Image
-                        source={require('../../assets/leftLogo.png')}
-                        style={styles.logo}
-                    />
-                </View>
-            </View>
-
-            {/* ===== CENTER FORM ===== */}
-            <View style={styles.center}>
-                <View style={styles.card}>
-                    <Text style={styles.title}>Create your account</Text>
-
-                    {/* Full name */}
-                    <Text style={styles.label}>Full Name</Text>
-                    <View style={styles.inputWrapper}>
-                        <Ionicons name="person-outline" size={18} color="#7baea6" />
-                        <TextInput
-                            placeholder="John Doe"
-                            style={styles.input}
-                            placeholderTextColor="#9ca3af"
-                        />
-                    </View>
-
-                    {/* Email */}
-                    <Text style={styles.label}>Your Email</Text>
-                    <View style={styles.inputWrapper}>
-                        <Ionicons name="mail-outline" size={18} color="#7baea6" />
-                        <TextInput
-                            placeholder="we'll never spam you 💌"
-                            style={styles.input}
-                            keyboardType="email-address"
-                            placeholderTextColor="#9ca3af"
-                        />
-                    </View>
-
-                    {/* Password */}
-                    <Text style={styles.label}>Password</Text>
-                    <View style={styles.inputWrapper}>
-                        <Ionicons name="lock-closed-outline" size={18} color="#7baea6" />
-
-                        <TextInput
-                            placeholder="••••••••"
-                            style={styles.input}
-                            secureTextEntry={!showPassword}
-                            placeholderTextColor="#9ca3af"
-                        />
-
-                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                            <Ionicons
-                                name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                                size={18}
-                                color="#7baea6"
-                            />
-                        </TouchableOpacity>
-                    </View>
-
-                    {/* Button */}
-                    <TouchableOpacity style={styles.nextBtn}>
-                        <Text style={styles.nextText}>Continue ✨</Text>
-                    </TouchableOpacity>
-
-                    {/* ✅ SỬA ĐOẠN NÀY */}
-                    <Text style={styles.footerText}>
-                        Already part of the family?{' '}
-                        <Text
-                            style={styles.loginLink}
-                            onPress={() => navigation.navigate('Login')}
-                        >
-                            Log in here 💫
-                        </Text>
-                    </Text>
-
-                    <Text style={styles.orText}>OR SIGN UP WITH</Text>
-
-                    <View style={styles.socialRow}>
-                        <TouchableOpacity style={styles.socialBtn}>
-                            <Text>Google</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-
-            {/* ===== FOOTER ===== */}
-            <Text style={styles.copyright}>
-                © 2026 TIKO Planner. Helping mentors and students connect with pincher-perfect timing.
-            </Text>
-        </View>
-    );
+/* ===================== CSS ===================== */
+const styles = `
+.container {
+  max-width : 100%;
+  background-color: #eaf8f6;
+  display: flex;
+  flex-direction: column;
 }
 
-/* ===== STYLES ===== */
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#eaf8f6',
-    },
+.header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+}
 
-    header: {
-        height: 64,
-        justifyContent: 'center',
-        paddingHorizontal: 24,
-    },
+.logo {
+  width: 77px;
+  height: 40px;
+  margin-left: 300px;
+  margin-top: 93px;
+  object-fit: contain;
+  transform: scale(6);
+}
 
-    logoWrapper: {
-        width: 36,
-        height: 36,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginLeft: 180,
-    },
+.center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px;
+}
 
-    logo: {
-        width: 36,
-        height: 36,
-        resizeMode: 'contain',
-        transform: [{ scale: 6 }],
-    },
+.card {
+  width: 420px;
+  max-width: 90%;
+  background: #fff;
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
 
-    center: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
 
-    card: {
-        width: width > 520 ? 420 : '90%',
-        backgroundColor: '#fff',
-        borderRadius: 28,
-        padding: 24,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 20,
-        elevation: 8,
-    },
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #374151;
+}
 
-    title: {
-        fontSize: 22,
-        fontWeight: '700',
-        marginBottom: 20,
-        textAlign: 'center',
-    },
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d1f0eb;
+  border-radius: 14px;
+  padding: 0 12px;
+  margin-bottom: 16px;
+  background-color: #f9fefe;
+}
 
-    label: {
-        fontSize: 13,
-        fontWeight: '500',
-        marginBottom: 6,
-        color: '#374151',
-    },
+.inputWrapper input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px 8px;
+  background: transparent;
+}
 
-    inputWrapper: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#d1f0eb',
-        borderRadius: 14,
-        paddingHorizontal: 12,
-        marginBottom: 16,
-        backgroundColor: '#f9fefe',
-    },
+.eye {
+  cursor: pointer;
+}
 
-    input: {
-        flex: 1,
-        paddingVertical: 12,
-        marginHorizontal: 8,
-    },
+.nextBtn {
+  width: 100%;
+  background-color: #5ac88f;
+  padding: 16px;
+  border-radius: 999px;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 8px;
+  cursor: pointer;
 
-    nextBtn: {
-        backgroundColor: '#5ac88f',
-        paddingVertical: 16,
-        borderRadius: 999,
-        alignItems: 'center',
-        marginTop: 8,
-    },
+  box-shadow: 0 8px 20px rgba(90, 200, 143, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
 
-    nextText: {
-        color: '#fff',
-        fontWeight: '600',
-        fontSize: 16,
-    },
+.nextBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(90, 200, 143, 0.45);
+}
 
-    footerText: {
-        textAlign: 'center',
-        marginTop: 16,
-        color: '#6b7280',
-    },
+.nextBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(90, 200, 143, 0.3);
+}
 
-    loginLink: {
-        color: '#5ac88f',
-        fontWeight: '600',
-    },
 
-    orText: {
-        textAlign: 'center',
-        marginVertical: 16,
-        color: '#9ca3af',
-        fontSize: 12,
-    },
+.footerText {
+  line-height: 1.5;
+  text-align: center;
+  margin-top: 16px;
+  color: #6b7280;
+}
 
-    socialRow: {
-        flexDirection: 'row',
-        gap: 12,
-    },
+.loginLink {
+  color: #5ac88f;
+  font-weight: 600;
+  cursor: pointer;
+}
 
-    socialBtn: {
-        flex: 1,
-        borderWidth: 1,
-        borderColor: '#e5e7eb',
-        paddingVertical: 12,
-        borderRadius: 12,
-        alignItems: 'center',
-    },
+.orText {
+  text-align: center;
+  margin: 10px 0;
+  color: #9ca3af;
+  font-size: 12px;
+}
 
-    copyright: {
-        fontSize: 11,
-        color: '#6b7280',
-        textAlign: 'center',
-        paddingVertical: 16,
-    },
-});
+.socialRow {
+  display: flex;
+  gap: 12px;
+}
+
+.socialBtn {
+  flex: 1;
+  border: 1px solid #e5e7eb;
+  padding: 12px 0;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+}
+
+`;
+
+/* ===================== COMPONENT ===================== */
+export default function RegisterPage() {
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const styleTag = document.createElement("style");
+    styleTag.innerHTML = styles;
+    document.head.appendChild(styleTag);
+    return () => document.head.removeChild(styleTag);
+  }, []);
+
+  return (
+    <div className="container">
+      {/* HEADER */}
+      <div className="header">
+        <img src="/assets/leftLogo.png" alt="logo" className="logo" />
+      </div>
+
+      {/* CENTER */}
+      <div className="center">
+        <div className="card">
+          <h2 className="title">Create your account</h2>
+
+          <label className="label">Full Name</label>
+          <div className="inputWrapper">
+            <IoPersonOutline size={18} color="#7baea6" />
+            <input placeholder="John Doe" />
+          </div>
+
+          <label className="label">Your Email</label>
+          <div className="inputWrapper">
+            <IoMailOutline size={18} color="#7baea6" />
+            <input placeholder="we'll never spam you 💌" />
+          </div>
+
+          <label className="label">Password</label>
+          <div className="inputWrapper">
+            <IoLockClosedOutline size={18} color="#7baea6" />
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="••••••••"
+            />
+            <span className="eye" onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? (
+                <IoEyeOffOutline size={18} color="#7baea6" />
+              ) : (
+                <IoEyeOutline size={18} color="#7baea6" />
+              )}
+            </span>
+          </div>
+
+          <button className="nextBtn">Continue ✨</button>
+
+          <p className="footerText">
+            Already part of the family?{" "}
+            <span className="loginLink" onClick={() => navigate("/login")}>
+              Log in here 💫
+            </span>
+          </p>
+
+          <p className="orText">OR SIGN UP WITH</p>
+
+          <div className="socialRow">
+            <div className="socialBtn">Google</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

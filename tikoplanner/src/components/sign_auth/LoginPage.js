@@ -1,256 +1,271 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  IoMailOutline,
+  IoLockClosedOutline,
+  IoEyeOutline,
+  IoEyeOffOutline,
+} from "react-icons/io5";
 
+/* ===================== CSS ===================== */
+const styles = `
+.container {
+  max-width : 100%;
+  background-color: #eaf8f6;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+.header {
+  height: 88px;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 24px 8px;
+}
+
+.logoWrapper {
+  width: 40px;
+  height: 40px;
+  margin-left: 400px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  margin-top: 0px;
+  object-fit: contain;
+  transform: scale(6);
+}
+
+/* ===== CENTER ===== */
+.center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 80px;
+  justify-content: center;
+}
+
+/* ===== CARD ===== */
+.card {
+  width: 420px;
+  max-width: 90%;
+  background: #fff;
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+/* ===== INPUT ===== */
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d1f0eb;
+  border-radius: 14px;
+  padding: 0 12px;
+  margin-bottom: 16px;
+  background-color: #f9fefe;
+}
+
+.inputWrapper input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px 8px;
+  background: transparent;
+}
+
+.eye {
+  cursor: pointer;
+}
+
+/* ===== BUTTON ===== */
+.nextBtn {
+  width: 100%;
+  background-color: #5ac88f;
+  padding: 16px;
+  border-radius: 999px;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 8px;
+  cursor: pointer;
+
+  box-shadow: 0 8px 20px rgba(90, 200, 143, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nextBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(90, 200, 143, 0.45);
+}
+
+.nextBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(90, 200, 143, 0.3);
+}
+
+/* ===== TEXT ===== */
+.footerText {
+  text-align: center;
+  margin-top: 16px;
+  color: #6b7280;
+}
+
+.loginLink {
+  color: #5ac88f;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.orText {
+  text-align: center;
+  margin: 16px 0;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.socialRow {
+  display: flex;
+  gap: 12px;
+}
+
+.socialBtn {
+  flex: 1;
+  border: 1px solid #e5e7eb;
+  padding: 12px 0;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+
+`;
+
+/* ===================== COMPONENT ===================== */
 export default function LoginPage() {
-    const navigate = useNavigate();
-    const [index, setIndex] = useState(0);
-    const [showPassword, setShowPassword] = useState(false);
-    const sliderRef = useRef(null);
-    const isDesktop = window.innerWidth >= 768;
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const banners = [
-        "/assets/login_page/banner1.png",
-        "/assets/login_page/banner2.png",
-        "/assets/login_page/banner3.png",
-        "/assets/login_page/banner4.png",
-    ];
-    
-    useEffect(() => {
-        if (!isDesktop) return;
+  useEffect(() => {
+    const styleTag = document.createElement("style");
+    styleTag.innerHTML = styles;
+    document.head.appendChild(styleTag);
+    return () => document.head.removeChild(styleTag);
+  }, []);
 
-        const interval = setInterval(() => {
-            setIndex((prev) => (prev + 1) % banners.length);
-        }, 3500);
+  const handleLogin = async () => {
+    if (!email || !password) {
+      alert("Please enter email and password");
+      return;
+    }
 
-        return () => clearInterval(interval);
-    }, [isDesktop, banners.length]);
+    try {
+      const res = await fetch(
+        `http://localhost:3001/users?email=${email}`
+      );
+      const data = await res.json();
 
+      if (data.length === 0) {
+        alert("Email does not exist");
+        return;
+      }
 
-    useEffect(() => {
-        if (sliderRef.current) {
-            sliderRef.current.style.transform = `translateX(-${index * 100}%)`;
-        }
-    }, [index]);
+      const user = data[0];
+      if (user.password !== password) {
+        alert("Wrong password");
+        return;
+      }
 
-    return (
-        <>
-            <style>{`
-        * {
-          box-sizing: border-box;
-        }
+      localStorage.setItem("user", JSON.stringify(user));
 
-        .login-container {
-          display: flex;
-          height: 100vh;
-          background: #fff;
-        }
+      if (user.role === "admin") navigate("/admin");
+      else if (user.role === "mentor") navigate("/mentor");
+      else navigate("/home");
+    } catch {
+      alert("Server error");
+    }
+  };
 
-        /* ===== BANNER ===== */
-        .banner-wrapper {
-          flex: 1;
-          overflow: hidden;
-        }
+  return (
+    <div className="container">
+      {/* HEADER */}
+      <div className="header">
+        <div className="logoWrapper">
+          <img src="/assets/leftLogo.png" alt="logo" className="logo" />
+        </div>
+      </div>
 
-        .banner-slider {
-          display: flex;
-          height: 100%;
-          transition: transform 0.9s ease-in-out;
-        }
+      {/* CENTER */}
+      <div className="center">
+        <div className="card">
+          <h2 className="title">Welcome back 👋</h2>
 
-        .banner-slide {
-          min-width: 100%;
-          height: 100%;
-        }
+          <label className="label">Your Email</label>
+          <div className="inputWrapper">
+            <IoMailOutline size={18} color="#7baea6" />
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+            />
+          </div>
 
-        .banner-slide img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
+          <label className="label">Password</label>
+          <div className="inputWrapper">
+            <IoLockClosedOutline size={18} color="#7baea6" />
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+            />
+            <span className="eye" onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? (
+                <IoEyeOffOutline size={18} color="#7baea6" />
+              ) : (
+                <IoEyeOutline size={18} color="#7baea6" />
+              )}
+            </span>
+          </div>
 
-        /* ===== RIGHT FORM ===== */
-        .login-right {
-          width: 520px;
-          padding: 32px;
-          display: flex;
-          align-items: center;
-        }
+          <button className="nextBtn" onClick={handleLogin}>
+            Login ✨
+          </button>
 
-        .form-wrapper {
-          position: relative;
-          width: 100%;
-        }
+          <p className="footerText">
+            New here?{" "}
+            <span className="loginLink" onClick={() => navigate("/register")}>
+              Create an account 💫
+            </span>
+          </p>
 
-        .logo {
-          width: 190px;
-          height: 170px;
-          position: absolute;
-          top: -100px;
-          left: -20px;
-        }
+          <p className="orText">OR LOGIN WITH</p>
 
-        h2 {
-          font-size: 26px;
-          font-weight: 700;
-        }
-
-        .sub {
-          color: #666;
-          margin: 10px 0 24px;
-        }
-
-        /* ===== INPUT EMAIL ===== */
-        input {
-          width: 100%;
-          height: 52px;
-          padding: 0 16px;
-          border-radius: 12px;
-          border: 1px solid #ddd;
-          margin-bottom: 16px;
-          outline: none;
-          font-size: 14px;
-        }
-
-        input:focus {
-          border-color: #5ac88f;
-        }
-
-        /* ===== PASSWORD ===== */
-        .password-wrapper {
-          display: flex;
-          align-items: center;
-          height: 52px;
-          border: 1px solid #ddd;
-          border-radius: 12px;
-          padding: 0 16px;
-          margin-bottom: 10px;
-        }
-
-        .password-wrapper:focus-within {
-          border-color: #5ac88f;
-        }
-
-        .password-wrapper input {
-          border: none;
-          margin: 0;
-          padding: 0;
-          height: 100%;
-          flex: 1;
-          font-size: 14px;
-          outline: none;
-        }
-
-        .eye {
-          cursor: pointer;
-          color: #777;
-          user-select: none;
-          font-size: 18px;
-        }
-
-        /* ===== FORGOT ===== */
-        .forgot {
-          text-align: right;
-          margin-bottom: 24px;
-        }
-
-        .forgot span {
-          font-size: 13px;
-          color: #5ac88f;
-          font-weight: 500;
-          cursor: pointer;
-        }
-
-        /* ===== BUTTON ===== */
-        .login-btn {
-          width: 100%;
-          height: 52px;
-          border-radius: 999px;
-          background: #9ee6b8;
-          border: none;
-          font-weight: 600;
-          margin-bottom: 24px;
-          cursor: pointer;
-          font-size: 15px;
-        }
-
-        .login-btn:hover {
-          background: #8fddb0;
-        }
-
-        /* ===== SIGN UP ===== */
-        .signup {
-          text-align: center;
-          color: #555;
-        }
-
-        .signup span {
-          color: #5ac88f;
-          font-weight: 600;
-          text-decoration: underline;
-          cursor: pointer;
-        }
-      `}</style>
-
-            <div className="login-container">
-                {isDesktop && (
-                    <div className="banner-wrapper">
-                        <div className="banner-slider" ref={sliderRef}>
-                            {banners.map((img, i) => (
-                                <div className="banner-slide" key={i}>
-                                    <img src={img} alt={`banner-${i}`} />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                <div className="login-right">
-                    <div className="form-wrapper">
-                        <img
-                            src="/assets/leftLogo.png"
-                            className="logo"
-                            alt="logo"
-                        />
-
-                        <h2>Welcome back 👋</h2>
-                        <p className="sub">
-                            Let’s get you back to your learning plan
-                        </p>
-
-                        <input type="email" placeholder="Email" />
-
-                        <div className="password-wrapper">
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Password"
-                            />
-                            <span
-                                className="eye"
-                                onClick={() =>
-                                    setShowPassword((prev) => !prev)
-                                }
-                            >
-                                {showPassword ? "🙈" : "👁"}
-                            </span>
-                        </div>
-
-                        <div className="forgot">
-                            <span onClick={() => navigate("/forgot")}>
-                                Forgot password?
-                            </span>
-                        </div>
-
-                        <button className="login-btn">Login</button>
-
-                        <p className="signup">
-                            New to TIKO?{" "}
-                            <span onClick={() => navigate("/register")}>
-                                Sign Up
-                            </span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </>
-    );
+          <div className="socialRow">
+            <div className="socialBtn">Google</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

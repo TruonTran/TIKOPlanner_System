@@ -1,281 +1,418 @@
-import React from "react";
-import { Image, View } from "react-native";
+/* eslint-disable jsx-a11y/alt-text */
+import React, { useEffect } from "react";
+import Footer from "../screen/Footer";
 
-export default function GuestPage() {
-    return (
-        <div style={styles.app}>
-            {/* ===== HEADER ===== */}
-            <header style={styles.header}>
-                <View style={styles.logoRow}>
-                    <Image
-                        source={require("../../assets/leftLogo.png")}
-                        style={styles.logo}
-                        resizeMode="contain"
-                    />
-                </View>
-
-                <nav style={styles.nav}>
-                    <a style={styles.navItem} href="#">Home</a>
-                    <a style={styles.navItem} href="#">Mentors</a>
-                    <a style={styles.navItem} href="#">About</a>
-                    <button style={styles.signupBtn}>Sign Up</button>
-                </nav>
-            </header>
-
-            {/* ===== HERO ===== */}
-            <section style={styles.hero}>
-                <h1 style={styles.heroTitle}>
-                    Book Your Next Learning Session <br />
-                    <span style={styles.green}>in Under 1 Minute</span>
-                </h1>
-
-                <p style={styles.heroDesc}>
-                    Connect with industry experts. Choose your stack.
-                    Schedule instantly. Accelerate your tech career with
-                    TIKO Planner.
-                </p>
-
-                <div style={styles.searchBox}>
-                    <input
-                        style={styles.searchInput}
-                        placeholder="Search by tech stack (e.g. React Native, MongoDB)"
-                    />
-                    <button style={styles.searchBtn}>Find Mentor</button>
-                </div>
-
-                <div style={styles.popular}>
-                    Popular:
-                    <span style={styles.tag}>React Native</span>
-                    <span style={styles.tag}>Postman</span>
-                    <span style={styles.tag}>MongoDB</span>
-                </div>
-            </section>
-
-            {/* ===== FEATURES ===== */}
-            <section style={styles.features}>
-                <Feature
-                    title="Unified Search"
-                    desc="Find the perfect mentor across diverse technology stacks with our advanced filtering system."
-                />
-                <Feature
-                    title="Real-time Scheduling"
-                    desc="View live availability and book slots immediately without back-and-forth emails."
-                />
-                <Feature
-                    title="Instant Notifications"
-                    desc="Get reminders and updates so you never miss a learning opportunity."
-                />
-            </section>
-
-            {/* ===== MENTORS ===== */}
-            <section style={styles.mentors}>
-                <div style={styles.mentorHeader}>
-                    <h2>Top Rated Mentors</h2>
-                    <a href="#" style={styles.link}>View All Mentors →</a>
-                </div>
-
-                <div style={styles.mentorList}>
-                    <Mentor name="Alex Johnson" role="Senior Frontend Engineer" />
-                    <Mentor name="Sarah Chen" role="Backend Specialist" />
-                    <Mentor name="Marcus Wright" role="Mobile Architect" />
-                </div>
-            </section>
-
-            {/* ===== FOOTER ===== */}
-            <footer style={styles.footer}>
-                © 2026 TIKO Planner. All rights reserved.
-            </footer>
-        </div>
-    );
+/* ===================== CSS ===================== */
+const styles = `
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== COMPONENTS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+  100% { transform: translateY(0); }
+}
+
+/* ===== SLIDER CORE ===== */
+.slider{
+  width: 100%;
+  height: var(--height);
+  overflow: hidden;
+  margin-top: 30px;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 10% 90%,
+    transparent
+  );
+}
+
+.slider .list{
+  width: 100%;
+  min-width: calc(var(--width) * var(--quantity));
+  position: relative;
+  height: var(--height);
+}
+
+.slider .item{
+  width: var(--width);
+  height: var(--height);
+  position: absolute;
+  left: 100%;
+  animation: autoRun 12s linear infinite;
+  animation-delay: calc(
+    (12s / var(--quantity)) * (var(--position) - 1) - 12s
+  );
+  transition: filter .4s;
+}
+
+.slider .item img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.15);
+}
+
+@keyframes autoRun{
+  from { left: 100%; }
+  to { left: calc(var(--width) * -1); }
+}
+
+.slider:hover .item{
+  animation-play-state: paused;
+  filter: grayscale(1);
+}
+
+.slider .item:hover{
+  filter: grayscale(0);
+}
+
+/* ===== GLOBAL ===== */
+body {
+  margin: 0;
+  font-family: Segoe UI, sans-serif;
+}
+
+.app {
+  background: #f8fffc;
+  color: #0f172a;
+}
+
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 80px;
+  animation: fadeDown .6s ease;
+}
+
+.logo {
+  width: 250px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.nav {
+  display: flex;
+  gap: 24px;
+}
+
+.navItem {
+  text-decoration: none;
+  color: #0f172a;
+  font-weight: 500;
+}
+
+.signupBtn {
+  background: #22c55e;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ===== CAROUSEL WRAPPER ===== */
+.carousel-wrapper {
+  max-width: 1800px;     /* chỉnh nhỏ / lớn tại đây */
+  margin: 0 auto 60px;   /* canh giữa + cách dưới */
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,.12);
+}
+
+/* ép chiều cao đồng đều */
+.carousel-item {
+  height: 800px;
+}
+
+.carousel-item img {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== INFO SECTION ===== */
+.infoSection {
+  padding: 80px 80px;
+  background: #ffffff;
+}
+
+.infoContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.infoImage {
+  display: flex;
+  justify-content: center;
+}
+
+.infoImage img {
+  width: 160px; 
+  height: auto;
+  animation: float 4s ease-in-out infinite;
+  filter: drop-shadow(0 10px 15px rgba(34, 197, 94, 0.2));
+}
+
+.infoContent h2 {
+  font-size: 32px;
+  margin-bottom: 24px;
+  color: #0f172a;
+}
+
+.infoContent p {
+  color: #475569;
+  margin-bottom: 24px;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.infoContent ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.infoContent li {
+  margin-bottom: 14px;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.infoContent li::before {
+  content: "✓";
+  color: #22c55e;
+  font-weight: bold;
+  background: #f0fdf4;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+  padding: 90px 20px;
+  animation: fadeUp .8s ease;
+}
+
+.heroTitle {
+  font-size: 44px;
+}
+
+.green {
+  color: #22c55e;
+}
+
+.heroDesc {
+  max-width: 700px;
+  margin: 16px auto;
+  color: #475569;
+}
+
+/* ===== FEATURES ===== */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 60px 40px;
+}
+
+.featureCard {
+  background: #fff;
+  padding: 28px;
+  border-radius: 18px;
+  width: 280px;
+  animation: scaleIn .6s ease;
+}
+
+/* ===== MENTORS ===== */
+.mentors {
+  padding: 60px 80px;
+}
+
+.mentorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link {
+  color: #22c55e;
+  font-weight: 600;
+  text-decoration: none;
+}
+`;
+
+/* ================= COMPONENT ================= */
+export default function GuestPage() {
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = styles;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
+
+  return (
+    <div className="app">
+      {/* HEADER */}
+      <header className="header">
+        <img src="/assets/leftLogo.png" alt="logo" className="logo" />
+
+        <nav className="nav">
+          <a className="navItem" href="/mentors">Mentors</a>
+          <a className="navItem" href="/about">About</a>
+          <button className="signupBtn" onClick={() => window.location.href = "/register"}>
+            Sign Up
+          </button>
+        </nav>
+      </header>
+
+      <div className="carousel-wrapper">
+        <div id="carouselExampleFade" className="carousel slide carousel-fade">
+          <div className="carousel-inner">
+            <div className="carousel-item active">
+              <img src="/assets/guest_page/banner/banner1.png" className="d-block w-100" />
+            </div>
+            <div className="carousel-item">
+              <img src="/assets/guest_page/banner/banner2.png" className="d-block w-100" />
+            </div>
+            <div className="carousel-item">
+              <img src="/assets/guest_page/banner/banner3.png" className="d-block w-100" />
+            </div>
+            <div className="carousel-item">
+              <img src="/assets/guest_page/banner/banner4.png" className="d-block w-100" />
+            </div>
+          </div>
+
+          <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+            <span className="carousel-control-prev-icon"></span>
+          </button>
+
+          <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+            <span className="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </div>
+
+      {/* INFO SECTION */}
+      <section className="infoSection">
+        <div className="infoContainer">
+          {/* LEFT IMAGE - REDUCED SIZE */}
+          <div className="infoImage">
+            <img
+              src="https://via.placeholder.com/160?text=Favicon"
+              alt="favicon illustration"
+            />
+          </div>
+
+          {/* RIGHT CONTENT */}
+          <div className="infoContent">
+            <h2>Nền tảng đặt lịch học cùng Mentor chuyên nghiệp</h2>
+
+            <p>
+              Website của chúng tôi được xây dựng xoay quanh trải nghiệm người học:
+              nhanh, đơn giản và tập trung vào việc đặt lịch với mentor phù hợp nhất.
+            </p>
+
+            <ul>
+              <li>Người học có thể tìm mentor và đặt lịch chỉ trong vài bước</li>
+              <li>Giao diện trực quan, dễ sử dụng ngay từ lần truy cập đầu tiên</li>
+              <li>Lịch học rõ ràng, linh hoạt theo thời gian của người dùng</li>
+              <li>Tối ưu trải nghiệm để giảm thao tác và tiết kiệm thời gian</li>
+              <li>Xây dựng độ tin cậy giữa mentor và người học</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+
+
+      {/* HERO */}
+      <section className="hero">
+        <h1 className="heroTitle">
+          Book Your Next Learning Session <br />
+          <span className="green">in Under 1 Minute</span>
+        </h1>
+
+        <p className="heroDesc">
+          Connect with industry experts. Choose your stack. Schedule instantly.
+        </p>
+      </section>
+
+      {/* TOP MENTORS WITH SLIDER */}
+      <section className="mentors">
+        <div className="mentorHeader">
+          <h2>Top Rated Mentors</h2>
+        </div>
+
+        <div
+          className="slider"
+          style={{
+            "--width": "220px",
+            "--height": "260px",
+            "--quantity": 6
+          }}
+        >
+          <div className="list">
+            <div className="item" style={{ "--position": 1 }}>
+              <img src="/assets/guest_page/slide/mentor1.png" />
+            </div>
+            <div className="item" style={{ "--position": 2 }}>
+              <img src="/assets/guest_page/slide/mentor2.png" />
+            </div>
+            <div className="item" style={{ "--position": 3 }}>
+              <img src="/assets/guest_page/slide/mentor3.png" />
+            </div>
+            <div className="item" style={{ "--position": 4 }}>
+              <img src="/assets/guest_page/slide/mentor4.png" />
+            </div>
+            <div className="item" style={{ "--position": 5 }}>
+              <img src="/assets/guest_page/slide/mentor5.png" />
+            </div>
+            <div className="item" style={{ "--position": 6 }}>
+              <img src="/assets/guest_page/slide/mentor6.png" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+}
+
+/* ===== SUB COMPONENT ===== */
+// eslint-disable-next-line no-unused-vars
 const Feature = ({ title, desc }) => (
-    <div style={styles.featureCard}>
-        <h3>{title}</h3>
-        <p style={styles.muted}>{desc}</p>
-    </div>
+  <div className="featureCard">
+    <h3>{title}</h3>
+    <p style={{ color: "#475569" }}>{desc}</p>
+  </div>
 );
-
-const Mentor = ({ name, role }) => (
-    <div style={styles.mentorCard}>
-        <div style={styles.avatarPlaceholder} />
-        <h4>{name}</h4>
-        <p style={styles.muted}>{role}</p>
-        <button style={styles.viewBtn}>View Availability</button>
-    </div>
-);
-
-/* ===== STYLES ===== */
-
-const styles = {
-    app: {
-        fontFamily: "Segoe UI, sans-serif",
-        background: "#f8fffc",
-        color: "#0f172a",
-    },
-
-    header: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "20px 80px",
-        // background: "#fff",
-    },
-
-    logo: {
-        width: 150,
-        height: 100,
-    },
-
-    green: {
-        color: "#22c55e",
-    },
-
-    nav: {
-        display: "flex",
-        alignItems: "center",
-        gap: 24,
-    },
-
-    navItem: {
-        textDecoration: "none",
-        color: "#0f172a",
-        fontWeight: 500,
-    },
-
-    signupBtn: {
-        background: "#22c55e",
-        border: "none",
-        padding: "8px 18px",
-        borderRadius: 20,
-        color: "#fff",
-        fontWeight: 600,
-        cursor: "pointer",
-    },
-
-    hero: {
-        textAlign: "center",
-        padding: "90px 20px",
-    },
-
-    heroTitle: {
-        fontSize: 44,
-        lineHeight: 1.3,
-    },
-
-    heroDesc: {
-        maxWidth: 700,
-        margin: "16px auto",
-        color: "#475569",
-    },
-
-    searchBox: {
-        display: "flex",
-        justifyContent: "center",
-        marginTop: 30,
-    },
-
-    searchInput: {
-        width: 400,
-        padding: 14,
-        border: "1px solid #e5e7eb",
-        borderRadius: "14px 0 0 14px",
-        outline: "none",
-    },
-
-    searchBtn: {
-        padding: "14px 24px",
-        border: "none",
-        background: "#22c55e",
-        color: "#fff",
-        borderRadius: "0 14px 14px 0",
-        cursor: "pointer",
-    },
-
-    popular: {
-        marginTop: 14,
-        fontSize: 14,
-    },
-
-    tag: {
-        background: "#dcfce7",
-        padding: "4px 10px",
-        borderRadius: 10,
-        marginLeft: 8,
-    },
-
-    features: {
-        display: "flex",
-        justifyContent: "center",
-        gap: 24,
-        padding: "60px 40px",
-    },
-
-    featureCard: {
-        background: "#fff",
-        padding: 28,
-        borderRadius: 18,
-        width: 280,
-    },
-
-    mentors: {
-        padding: "60px 80px",
-    },
-
-    mentorHeader: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
-
-    link: {
-        color: "#22c55e",
-        fontWeight: 600,
-        textDecoration: "none",
-    },
-
-    mentorList: {
-        display: "flex",
-        gap: 24,
-        marginTop: 30,
-    },
-
-    mentorCard: {
-        background: "#fff",
-        borderRadius: 20,
-        padding: 20,
-        width: 260,
-        textAlign: "center",
-    },
-
-    avatarPlaceholder: {
-        width: "100%",
-        height: 160,
-        borderRadius: 16,
-        background: "#e5e7eb",
-        marginBottom: 12,
-    },
-
-    viewBtn: {
-        marginTop: 14,
-        width: "100%",
-        padding: 10,
-        borderRadius: 12,
-        border: "none",
-        background: "#f1f5f9",
-        cursor: "pointer",
-    },
-
-    muted: {
-        color: "#475569",
-        fontSize: 14,
-    },
-
-    footer: {
-        textAlign: "center",
-        padding: 30,
-        color: "#64748b",
-    },
-};

@@ -1,468 +1,218 @@
-import React from "react";
-import {
-    View,
-    Text,
-    StyleSheet,
-    ScrollView,
-    Image,
-    TouchableOpacity,
-    Dimensions,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+/* eslint-disable jsx-a11y/alt-text */
+import React, { useEffect, useState } from "react";
+import { IoSunnyOutline, IoSearchOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
+import Footer from "../screen/Footer";
 
-const { width } = Dimensions.get("window");
-const isDesktop = width >= 900;
-
-export default function HomePage() {
-    return (
-        <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{ backgroundColor: "#f6fffb" }}
-        >
-            {/* ================= HEADER ================= */}
-            <View style={styles.header}>
-                <View style={styles.logoRow}>
-                    <Image
-                        source={require("../../assets/leftLogo.png")}
-                        style={styles.logo}
-                        resizeMode="contain"
-                    />
-                </View>
-
-                <View style={styles.navRow}>
-                    <Text style={styles.navActive}>Dashboard</Text>
-                    <Text style={styles.navItem}>Mentors</Text>
-                    <Text style={styles.navItem}>Resources</Text>
-                    <Text style={styles.navItem}>Schedule</Text>
-                </View>
-
-                {/* logo của user và tên user */}
-                <View style={styles.profileRow}>
-                    <Ionicons name="sunny-outline" size={20} color="#6b7280" />
-                    <Image
-                        source={require("../../assets/logoconen.png")}
-                        style={styles.avatar}
-                    />
-                    <Text style={styles.profileName}>Alex J.</Text>
-                </View>
-            </View>
-
-            {/* ================= HERO ================= */}
-            <View style={styles.hero}>
-                <View style={{ flex: 1 }}>
-                    <Text style={styles.heroTitle}>
-                        Welcome back,{" "}
-                        <Text style={styles.heroHighlight}>
-                            Master of Your Day!
-                        </Text>{" "}
-                        👋
-                    </Text>
-
-                    <Text style={styles.heroDesc}>
-                        Ready to achieve your goals? Search for your next lesson
-                        or browse your mentors.
-                    </Text>
-
-                    <View style={styles.searchBox}>
-                        <Ionicons name="search" size={18} color="#7aa7a0" />
-                        <Text style={styles.searchPlaceholder}>
-                            Search for mentors, topics, or resources...
-                        </Text>
-                    </View>
-                </View>
-
-                {isDesktop && (
-                    <View style={styles.mascotWrap}>
-                        <View style={styles.mascotCircle}>
-                            <Image
-                                source={require("../../assets/favicon.png")}
-                                style={{ width: 80, height: 80 }}
-                            />
-                            <Text style={styles.mascotText}>TIKO MASCOT</Text>
-                        </View>
-                    </View>
-                )}
-            </View>
-
-            {/* ================= QUICK ACTION ================= */}
-            <View style={styles.quickRow}>
-                {quickCard("people-outline", "Find a Mentor", "Browse Mentors →")}
-                {quickCard(
-                    "calendar-outline",
-                    "My Schedule",
-                    "View Calendar →"
-                )}
-                {quickCard(
-                    "trending-up-outline",
-                    "Learning Path",
-                    "View Path →"
-                )}
-            </View>
-
-            {/* ================= CONTENT ================= */}
-            <View
-                style={[
-                    styles.contentRow,
-                    !isDesktop && { flexDirection: "column" },
-                ]}
-            >
-                {/* Recent Progress */}
-                <View style={styles.card}>
-                    <View style={styles.cardHeader}>
-                        <Text style={styles.cardTitle}>Recent Progress</Text>
-                        <Text style={styles.cardLink}>View All</Text>
-                    </View>
-
-                    {progressItem("UI/UX Fundamentals", 75)}
-                    {progressItem("Advanced React Patterns", 40)}
-                </View>
-
-                {/* Next Sessions */}
-                <View style={styles.card}>
-                    <View style={styles.cardHeader}>
-                        <Text style={styles.cardTitle}>Next Sessions</Text>
-                        <Text style={styles.cardLink}>Manage</Text>
-                    </View>
-
-                    {sessionItem(
-                        "24 OCT",
-                        "Mentorship with Sarah Chen",
-                        "02:00 PM - 03:00 PM · Zoom",
-                        true
-                    )}
-
-                    {sessionItem(
-                        "26 OCT",
-                        "Career Guidance Session",
-                        "11:30 AM - 12:30 PM · Google Meet",
-                        false
-                    )}
-                </View>
-            </View>
-
-            {/* ================= FOOTER ================= */}
-            <View style={styles.footer}>
-                <Text style={styles.footerText}>
-                    © 2024 TIKO Planner. Effortless Organization for a Productive
-                    Life.
-                </Text>
-            </View>
-        </ScrollView>
-    );
+/* ===================== CSS ===================== */
+const styles = `
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ================= HELPERS ================= */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-const quickCard = (icon, title, action) => (
-    <View style={styles.quickCard} key={title}>
-        <Ionicons name={icon} size={26} color="#34d399" />
-        <Text style={styles.quickTitle}>{title}</Text>
-        <Text style={styles.quickAction}>{action}</Text>
-    </View>
-);
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+  100% { transform: translateY(0); }
+}
 
-const progressItem = (label, percent) => (
-    <View key={label} style={{ marginBottom: 16 }}>
-        <View style={styles.progressRow}>
-            <Text style={styles.progressLabel}>{label}</Text>
-            <Text style={styles.progressPercent}>{percent}%</Text>
-        </View>
-        <View style={styles.progressBg}>
-            <View
-                style={[styles.progressFill, { width: `${percent}%` }]}
-            />
-        </View>
-    </View>
-);
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+}
 
-const sessionItem = (date, title, time, primary) => (
-    <View key={title} style={styles.sessionItem}>
-        <View style={styles.sessionDate}>
-            <Text style={styles.sessionDay}>{date.split(" ")[0]}</Text>
-            <Text style={styles.sessionMonth}>{date.split(" ")[1]}</Text>
-        </View>
+.page {
+  background-color: #f6fffb;
+}
 
-        <View style={{ flex: 1 }}>
-            <Text style={styles.sessionTitle}>{title}</Text>
-            <Text style={styles.sessionTime}>{time}</Text>
-        </View>
+/* ================= HEADER ================= */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 0 20px;
+  animation: fadeDown .5s ease;
+}
 
-        <TouchableOpacity
-            style={[
-                styles.sessionBtn,
-                primary ? styles.joinBtn : styles.detailBtn,
-            ]}
-        >
-            <Text
-                style={[
-                    styles.sessionBtnText,
-                    !primary && { color: "#374151" },
-                ]}
-            >
-                {primary ? "Join" : "Details"}
-            </Text>
-        </TouchableOpacity>
-    </View>
-);
+.logo {
+  width: 150px;
+  height: 100px;
+  object-fit: contain;
+}
 
-/* ================= STYLES ================= */
+.navRow {
+  display: flex;
+  gap: 20px;
+}
 
-const styles = StyleSheet.create({
-    header: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        paddingHorizontal: 10,
-        paddingVertical: 0,
-        backgroundColor: "#fff",
-    },
+.navItem {
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+}
 
-    logo: {
-        width: 150,
-        height: 100,
-    },
+.navActive {
+  color: #34d399;
+  font-weight: 700;
+  border-bottom: 2px solid #34d399;
+  padding-bottom: 4px;
+}
 
+.profileRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    navRow: {
-        flexDirection: "row",
-        gap: 20,
-    },
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+}
 
-    navItem: {
-        color: "#374151",
-        fontWeight: "500",
-    },
+/* ================= HERO ================= */
+.hero {
+  background-color: #ecfdf5;
+  margin: 20px;
+  border-radius: 28px;
+  padding: 28px;
+  display: flex;
+  gap: 20px;
+  animation: fadeUp .6s ease;
+}
 
-    navActive: {
-        color: "#34d399",
-        fontWeight: "700",
-        borderBottomWidth: 2,
-        borderBottomColor: "#34d399",
-        paddingBottom: 4,
-    },
+.heroTitle {
+  font-size: 30px;
+  font-weight: 900;
+  color: #04281f;
+}
 
-    profileRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 10,
-    },
+.heroHighlight {
+  color: #34d399;
+}
 
-    avatar: {
-        width: 34,
-        height: 34,
-        borderRadius: 17,
-        backgroundColor: "#e5e7eb",
-    },
+.heroDesc {
+  color: #4b7f76;
+  margin-top: 10px;
+  max-width: 500px;
+}
 
-    profileName: {
-        fontWeight: "600",
-    },
+.searchBox {
+  margin-top: 18px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #7aa7a0;
+}
 
-    hero: {
-        backgroundColor: "#ecfdf5",
-        margin: 20,
-        borderRadius: 28,
-        padding: 28,
-        flexDirection: "row",
-        gap: 20,
-    },
+.mascotWrap {
+  display: flex;
+  align-items: center;
+}
 
-    heroTitle: {
-        fontSize: 30,
-        fontWeight: "900",
-        color: "#04281f",
-    },
+.mascotCircle {
+  width: 160px;
+  height: 160px;
+  border-radius: 80px;
+  background: #fff;
+  border: 3px solid #34d399;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: float 4s ease-in-out infinite;
+}
 
-    heroHighlight: {
-        color: "#34d399",
-    },
+.mascotText {
+  font-size: 11px;
+  font-weight: 700;
+  color: #34d399;
+  margin-top: 6px;
+}
+`;
 
-    heroDesc: {
-        color: "#4b7f76",
-        marginTop: 10,
-        maxWidth: 500,
-    },
+/* ================= COMPONENT ================= */
+export default function HomePage() {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-    searchBox: {
-        marginTop: 18,
-        backgroundColor: "#fff",
-        borderRadius: 14,
-        padding: 14,
-        flexDirection: "row",
-        alignItems: "center",
-    },
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = styles;
+    document.head.appendChild(style);
 
-    searchPlaceholder: {
-        marginLeft: 8,
-        color: "#7aa7a0",
-    },
+    // ✅ LẤY USER ĐÃ LOGIN
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      navigate("/login");
+    } else {
+      setUser(JSON.parse(storedUser));
+    }
 
-    mascotWrap: {
-        justifyContent: "center",
-    },
+    return () => document.head.removeChild(style);
+  }, [navigate]);
 
-    mascotCircle: {
-        width: 160,
-        height: 160,
-        borderRadius: 80,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-        borderWidth: 3,
-        borderColor: "#34d399",
-    },
+  if (!user) return null;
 
-    mascotText: {
-        marginTop: 6,
-        fontSize: 11,
-        fontWeight: "700",
-        color: "#34d399",
-    },
+  return (
+    <div className="page">
+      {/* ================= HEADER ================= */}
+      <div className="header">
+        <img src="/assets/leftLogo.png" className="logo" />
 
-    quickRow: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingHorizontal: 20,
-        gap: 16,
-    },
+        <div className="navRow">
+          <div className="navActive">Dashboard</div>
+          <div className="navItem">Mentors</div>
+          <div className="navItem">Resources</div>
+          <div className="navItem">Schedule</div>
+        </div>
 
-    quickCard: {
-        flex: 1,
-        backgroundColor: "#fff",
-        borderRadius: 20,
-        padding: 20,
-    },
+        <div className="profileRow">
+          <IoSunnyOutline size={20} color="#6b7280" />
+          <img src={user.avatar} className="avatar" />
+          <strong>{user.name}</strong>
+        </div>
+      </div>
 
-    quickTitle: {
-        marginTop: 14,
-        fontWeight: "800",
-        color: "#04281f",
-    },
+      {/* ================= HERO ================= */}
+      <div className="hero">
+        <div style={{ flex: 1 }}>
+          <div className="heroTitle">
+            Welcome back,{" "}
+            <span className="heroHighlight">{user.name}</span> 👋
+          </div>
 
-    quickAction: {
-        marginTop: 10,
-        color: "#34d399",
-        fontWeight: "700",
-    },
+          <div className="heroDesc">
+            Ready to achieve your goals? Search for your next lesson or browse
+            your mentors.
+          </div>
 
-    contentRow: {
-        flexDirection: "row",
-        padding: 20,
-        gap: 20,
-    },
+          <div className="searchBox">
+            <IoSearchOutline size={18} color="#7aa7a0" />
+            Search for mentors, topics, or resources...
+          </div>
+        </div>
 
-    card: {
-        flex: 1,
-        backgroundColor: "#fff",
-        borderRadius: 20,
-        padding: 20,
-    },
+        <div className="mascotWrap">
+          <div className="mascotCircle">
+            <img src="/assets/favicon.png" width="80" />
+            <div className="mascotText">TIKO MASCOT</div>
+          </div>
+        </div>
+      </div>
 
-    cardHeader: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 16,
-    },
-
-    cardTitle: {
-        fontWeight: "900",
-        fontSize: 16,
-        color: "#04281f",
-    },
-
-    cardLink: {
-        color: "#34d399",
-        fontWeight: "700",
-    },
-
-    progressRow: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
-
-    progressLabel: {
-        fontWeight: "600",
-    },
-
-    progressPercent: {
-        color: "#34d399",
-        fontWeight: "700",
-    },
-
-    progressBg: {
-        height: 8,
-        backgroundColor: "#e5f4f1",
-        borderRadius: 6,
-        marginTop: 6,
-    },
-
-    progressFill: {
-        height: "100%",
-        backgroundColor: "#34d399",
-        borderRadius: 6,
-    },
-
-    sessionItem: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 16,
-        gap: 14,
-    },
-
-    sessionDate: {
-        width: 44,
-        height: 44,
-        borderRadius: 22,
-        backgroundColor: "#ecfdf5",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-
-    sessionDay: {
-        fontWeight: "900",
-        color: "#34d399",
-    },
-
-    sessionMonth: {
-        fontSize: 10,
-        color: "#4b7f76",
-    },
-
-    sessionTitle: {
-        fontWeight: "700",
-    },
-
-    sessionTime: {
-        fontSize: 12,
-        color: "#6b7280",
-    },
-
-    sessionBtn: {
-        paddingHorizontal: 14,
-        paddingVertical: 8,
-        borderRadius: 12,
-    },
-
-    joinBtn: {
-        backgroundColor: "#34d399",
-    },
-
-    detailBtn: {
-        backgroundColor: "#f3f4f6",
-    },
-
-    sessionBtnText: {
-        color: "#fff",
-        fontWeight: "700",
-    },
-
-    footer: {
-        padding: 30,
-        alignItems: "center",
-    },
-
-    footerText: {
-        color: "#6b7280",
-        fontSize: 12,
-    },
-});
+     <Footer />
+    </div>
+  );
+}

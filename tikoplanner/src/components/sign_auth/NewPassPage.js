@@ -1,180 +1,218 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-    View,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    StyleSheet,
-    Image,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+  IoLockClosedOutline,
+  IoEyeOutline,
+  IoEyeOffOutline,
+} from "react-icons/io5";
 
-export default function NewPassPage() {
-    const navigation = useNavigation();
-    const [showPass, setShowPass] = useState(false);
-    const [showConfirm, setShowConfirm] = useState(false);
-
-    return (
-        <LinearGradient
-            colors={["#f3fdf9", "#ffffff", "#fef4ee"]}
-            style={styles.container}
-        >
-            {/* Logo góc trái */}
-            <View style={styles.logoWrapper}>
-                <Image
-                    source={require("../../assets/leftLogo.png")}
-                    style={styles.logo}
-                    resizeMode="contain"
-                />
-            </View>
-
-            {/* Card */}
-            <View style={styles.card}>
-                <Text style={styles.title}>Create New Password</Text>
-
-                <Text style={styles.desc}>
-                    Your new password must be different from previously used passwords.
-                </Text>
-
-                {/* New Password */}
-                <Text style={styles.label}>New Password</Text>
-                <View style={styles.inputBox}>
-                    <Ionicons name="lock-closed-outline" size={18} color="#999" />
-                    <TextInput
-                        placeholder="Enter new password"
-                        style={styles.input}
-                        secureTextEntry={!showPass}
-                    />
-                    <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-                        <Ionicons
-                            name={showPass ? "eye-off-outline" : "eye-outline"}
-                            size={18}
-                            color="#999"
-                        />
-                    </TouchableOpacity>
-                </View>
-
-                {/* Confirm Password */}
-                <Text style={styles.label}>Confirm Password</Text>
-                <View style={styles.inputBox}>
-                    <Ionicons name="lock-closed-outline" size={18} color="#999" />
-                    <TextInput
-                        placeholder="Confirm new password"
-                        style={styles.input}
-                        secureTextEntry={!showConfirm}
-                    />
-                    <TouchableOpacity onPress={() => setShowConfirm(!showConfirm)}>
-                        <Ionicons
-                            name={showConfirm ? "eye-off-outline" : "eye-outline"}
-                            size={18}
-                            color="#999"
-                        />
-                    </TouchableOpacity>
-                </View>
-
-                {/* Button */}
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Continue</Text>
-                </TouchableOpacity>
-
-                {/* Back */}
-                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                    <Text style={styles.back}>← Back to Login</Text>
-                </TouchableOpacity>
-            </View>
-        </LinearGradient>
-    );
+/* ===================== CSS ===================== */
+const styles = `
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-    },
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+  100% { transform: translateY(0); }
+}
 
-    /* ===== LOGO (GIỐNG FORGOT PAGE) ===== */
+.container {
+  max-width : 100%;
+  padding : 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eaf8f6;
+  position: relative;
+}
 
-    logoWrapper: {
-        position: "absolute",
-        top: 0,
-        left: 500,
-        zIndex: 90,
-    },
+.logoWrapper {
+  position: absolute;
+  top: 0;
+  left: 500px;
+  z-index: 90;
+  animation: float 4s ease-in-out infinite;
+}
 
-    logo: {
-        width: 250,
-        height: 200,
-    },
+.logo {
+  width: 250px;
+  height: 200px;
+  object-fit: contain;
+}
 
-    /* ===== CARD (GIỐNG FORGOT PAGE) ===== */
-    card: {
-        width: "75%",
-        maxWidth: 400,
-        backgroundColor: "#fff",
-        borderRadius: 20,
-        padding: 22,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOpacity: 0.08,
-        shadowRadius: 20,
-        elevation: 5,
-    },
+.card {
+  width: 75%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 22px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  animation: fadeUp 0.6s ease forwards;
+}
 
-    title: {
-        fontSize: 22,
-        fontWeight: "700",
-        marginBottom: 10,
-        textAlign: "center",
-    },
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
 
-    desc: {
-        fontSize: 14,
-        color: "#6b7280",
-        textAlign: "center",
-        marginBottom: 20,
-    },
+.desc {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
 
-    label: {
-        alignSelf: "flex-start",
-        marginBottom: 6,
-        fontWeight: "500",
-    },
+.label {
+  text-align: left;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
 
-    inputBox: {
-        flexDirection: "row",
-        alignItems: "center",
-        borderWidth: 1,
-        borderColor: "#e5e7eb",
-        borderRadius: 12,
-        paddingHorizontal: 12,
-        height: 48,
-        width: "100%",
-        marginBottom: 20,
-    },
+.inputBox {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 0 12px;
+  height: 48px;
+  margin-bottom: 20px;
+  transition: all 0.25s ease;
+}
 
-    input: {
-        flex: 1,
-        marginLeft: 8,
-    },
+.inputBox:focus-within {
+  border-color: #a7e9c0;
+  box-shadow: 0 0 0 3px rgba(167,233,192,0.35);
+}
 
-    button: {
-        backgroundColor: "#a7e9c0",
-        width: "100%",
-        height: 48,
-        borderRadius: 12,
-        alignItems: "center",      
-        justifyContent: "center",
-        marginBottom: 16,
-    },
+.inputBox input {
+  flex: 1;
+  border: none;
+  outline: none;
+  margin-left: 8px;
+  background: transparent;
+}
 
-    buttonText: {
-        fontWeight: "600",
-    },
+.eye {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
 
-    back: {
-        color: "#6b7280",
-    },
-});
+.eye:hover {
+  transform: rotate(10deg) scale(1.1);
+}
+
+.button {
+  width: 100%;
+  height: 48px;
+  background-color: #a7e9c0;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: all 0.25s ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.back {
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.back:hover {
+  color: #111827;
+}
+`;
+
+/* ===================== COMPONENT ===================== */
+export default function NewPassPage() {
+  const navigate = useNavigate();
+  const [showPass, setShowPass] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  useEffect(() => {
+    const styleTag = document.createElement("style");
+    styleTag.innerHTML = styles;
+    document.head.appendChild(styleTag);
+    return () => document.head.removeChild(styleTag);
+  }, []);
+
+  return (
+    <div className="container">
+      {/* LOGO */}
+      <div className="logoWrapper">
+        <img src="/assets/leftLogo.png" alt="logo" className="logo" />
+      </div>
+
+      {/* CARD */}
+      <div className="card">
+        <h2 className="title">Create New Password</h2>
+
+        <p className="desc">
+          Your new password must be different from previously used passwords.
+        </p>
+
+        {/* New Password */}
+        <div className="label">New Password</div>
+        <div className="inputBox">
+          <IoLockClosedOutline size={18} color="#999" />
+          <input
+            type={showPass ? "text" : "password"}
+            placeholder="Enter new password"
+          />
+          <span className="eye" onClick={() => setShowPass(!showPass)}>
+            {showPass ? (
+              <IoEyeOffOutline size={18} color="#999" />
+            ) : (
+              <IoEyeOutline size={18} color="#999" />
+            )}
+          </span>
+        </div>
+
+        {/* Confirm Password */}
+        <div className="label">Confirm Password</div>
+        <div className="inputBox">
+          <IoLockClosedOutline size={18} color="#999" />
+          <input
+            type={showConfirm ? "text" : "password"}
+            placeholder="Confirm new password"
+          />
+          <span className="eye" onClick={() => setShowConfirm(!showConfirm)}>
+            {showConfirm ? (
+              <IoEyeOffOutline size={18} color="#999" />
+            ) : (
+              <IoEyeOutline size={18} color="#999" />
+            )}
+          </span>
+        </div>
+
+        {/* Button */}
+        <button className="button">Continue</button>
+
+        {/* Back */}
+        <div className="back" onClick={() => navigate("/login")}>
+          ← Back to Login
+        </div>
+      </div>
+    </div>
+  );
+}

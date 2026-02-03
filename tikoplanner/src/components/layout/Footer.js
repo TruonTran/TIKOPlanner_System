@@ -1,77 +1,7 @@
-import { useEffect } from "react";
-
-const footerStyles = `
-/* ===== FOOTER ADVANCED ===== */
-.footer {
-  background: #ffffff;
-  border-top: 1px solid #e5e7eb;
-  padding: 60px 80px 30px;
-}
-
-.footerTop {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 40px;
-}
-
-.footerBrand h3 {
-  font-size: 26px;
-  margin-bottom: 12px;
-}
-
-.footerBrand p {
-  color: #64748b;
-  line-height: 1.6;
-  max-width: 360px;
-}
-
-.footerTitle {
-  font-weight: 600;
-  margin-bottom: 14px;
-}
-
-.footerList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footerList li {
-  margin-bottom: 10px;
-}
-
-.footerList a {
-  text-decoration: none;
-  color: #475569;
-  transition: color .2s;
-}
-
-.footerList a:hover {
-  color: #22c55e;
-}
-
-.footerBottom {
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
-  text-align: center;
-  color: #94a3b8;
-  font-size: 14px;
-}
-`;
-
 export default function Footer() {
-    useEffect(() => {
-        const style = document.createElement("style");
-        style.innerHTML = footerStyles;
-        document.head.appendChild(style);
-        return () => document.head.removeChild(style);
-    }, []);
-
     return (
         <footer className="footer">
             <div className="footerTop">
-                {/* BRAND */}
                 <div className="footerBrand">
                     <h3>TIKO Planner</h3>
                     <p>
@@ -80,7 +10,6 @@ export default function Footer() {
                     </p>
                 </div>
 
-                {/* POLICY */}
                 <div>
                     <div className="footerTitle">Chính sách</div>
                     <ul className="footerList">
@@ -91,7 +20,6 @@ export default function Footer() {
                     </ul>
                 </div>
 
-                {/* MENTOR */}
                 <div>
                     <div className="footerTitle">Dành cho Mentor</div>
                     <ul className="footerList">
@@ -101,14 +29,13 @@ export default function Footer() {
                     </ul>
                 </div>
 
-                {/* MENU */}
                 <div>
                     <div className="footerTitle">Menu</div>
                     <ul className="footerList">
                         <li><a href="/">Trang chủ</a></li>
                         <li><a href="/mentors">Danh sách mentor</a></li>
                         <li><a href="/about">Giới thiệu</a></li>
-                        <li><a href="/login">Đăng nhập</a></li>
+                        <li><a href="/loginpage">Đăng nhập</a></li>
                     </ul>
                 </div>
             </div>

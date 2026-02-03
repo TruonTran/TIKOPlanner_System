@@ -23,8 +23,10 @@ npm install bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
+npx json-server --watch db.json --port 3001
 
 # Code up git
+
 git init
 git add .
 git remote add origin https://github.com/TruonTran/TIKOPlanner_System.git

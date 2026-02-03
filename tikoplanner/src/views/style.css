@@ -1,0 +1,416 @@
+.container {
+  max-width: 100%;
+  background-color: #eaf8f6;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+.header {
+  height: 88px;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 24px 8px;
+}
+
+.logoWrapper {
+  width: 10px;
+  height: 10px;
+  margin-left: 100px;
+}
+
+.logo {
+  width: 10px;
+  height: 10px;
+  margin-top: 0px;
+  object-fit: contain;
+  transform: scale(2);
+}
+
+/* ===== CENTER ===== */
+.center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 80px;
+  justify-content: center;
+}
+
+/* ===== CARD ===== */
+.card {
+  width: 420px;
+  max-width: 90%;
+  background: #fff;
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+/* ===== INPUT ===== */
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d1f0eb;
+  border-radius: 14px;
+  padding: 0 12px;
+  margin-bottom: 16px;
+  background-color: #f9fefe;
+}
+
+.inputWrapper input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px 8px;
+  background: transparent;
+}
+
+.eye {
+  cursor: pointer;
+}
+
+/* ===== FORGOT PASSWORD LINK ===== */
+.forgotLink {
+  text-align: right;
+  font-size: 13px;
+  color: #5ac88f;
+  font-weight: 500;
+  cursor: pointer;
+  margin: -8px 4px 12px;
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+/* ===== BUTTON ===== */
+.nextBtn {
+  width: 100%;
+  background-color: #5ac88f;
+  padding: 16px;
+  border-radius: 999px;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 8px;
+  cursor: pointer;
+
+  box-shadow: 0 8px 20px rgba(90, 200, 143, 0.35);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.nextBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(90, 200, 143, 0.45);
+}
+
+.nextBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(90, 200, 143, 0.3);
+}
+
+/* ===== TEXT ===== */
+.footerText {
+  text-align: center;
+  margin-top: 16px;
+  color: #6b7280;
+}
+
+.loginLink {
+  color: #5ac88f;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.orText {
+  text-align: center;
+  margin: 16px 0;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.socialRow {
+  display: flex;
+  gap: 12px;
+}
+
+.socialBtn {
+  flex: 1;
+  border: 1px solid #e5e7eb;
+  padding: 12px 0;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* ==========================New Pass page ================================== */
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* ===== AUTH CENTER ===== */
+.auth-center {
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* ===== LOGO ===== */
+.bigLogo {
+  width: 250px;
+  height: 200px;
+  transform: none;
+}
+
+.floating-logo {
+  position: absolute;
+  top: 0;
+  left: 500px;
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ===== CARD EFFECT ===== */
+.fadeUp {
+  animation: fadeUp 0.6s ease forwards;
+}
+
+/* ===== INPUT FOCUS EFFECT ===== */
+.focusable:focus-within {
+  border-color: #a7e9c0;
+  box-shadow: 0 0 0 3px rgba(167, 233, 192, 0.35);
+}
+
+/* ===== REGISTER LOGO OVERRIDE ===== */
+.registerLogo {
+  width: 10px;
+  height: 10px;
+  margin-left: 200px;
+  margin-top: 93px;
+  transform: scale(2);
+}
+
+/* ================= FOOTER ================= */
+.footer {
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  padding: 60px 80px 30px;
+}
+
+.footerTop {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.footerBrand h3 {
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+.footerBrand p {
+  color: #64748b;
+  line-height: 1.6;
+  max-width: 360px;
+}
+
+.footerTitle {
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.footerList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerList li {
+  margin-bottom: 10px;
+}
+
+.footerList a {
+  text-decoration: none;
+  color: #475569;
+  transition: color 0.2s;
+}
+
+.footerList a:hover {
+  color: #22c55e;
+}
+
+.footerBottom {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+/* ================= HOME PAGE ================= */
+
+/* animation còn thiếu */
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* page */
+.page {
+  background-color: #f6fffb;
+}
+
+/* ===== HEADER (HOME) ===== */
+.home-header {
+  justify-content: space-between;
+  background: #fff;
+  animation: fadeDown 0.5s ease;
+}
+
+.home-logo {
+  width: 150px;
+  height: 100px;
+  transform: none; /* tránh bị phình */
+}
+
+/* nav */
+.navRow {
+  display: flex;
+  gap: 20px;
+}
+
+.navItem {
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+}
+
+.navActive {
+  color: #34d399;
+  font-weight: 700;
+  border-bottom: 2px solid #34d399;
+  padding-bottom: 4px;
+}
+
+/* profile */
+.profileRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ===== HERO ===== */
+.hero {
+  background-color: #ecfdf5;
+  margin: 20px;
+  border-radius: 28px;
+  padding: 28px;
+  display: flex;
+  gap: 20px;
+  animation: fadeUp 0.6s ease;
+}
+
+.heroTitle {
+  font-size: 30px;
+  font-weight: 900;
+  color: #04281f;
+}
+
+.heroHighlight {
+  color: #34d399;
+}
+
+.heroDesc {
+  color: #4b7f76;
+  margin-top: 10px;
+  max-width: 500px;
+}
+
+.searchBox {
+  margin-top: 18px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #7aa7a0;
+}
+
+/* mascot */
+.mascotWrap {
+  display: flex;
+  align-items: center;
+}
+
+.mascotCircle {
+  width: 160px;
+  height: 160px;
+  border-radius: 80px;
+  background: #fff;
+  border: 3px solid #34d399;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: float 4s ease-in-out infinite;
+}
+
+.mascotText {
+  font-size: 11px;
+  font-weight: 700;
+  color: #34d399;
+  margin-top: 6px;
+}

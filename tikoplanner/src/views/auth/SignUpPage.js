@@ -7,7 +7,7 @@ import {
     IoEyeOutline,
     IoEyeOffOutline,
 } from "react-icons/io5";
-import "../style.css";
+import "./style.css";
 
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);

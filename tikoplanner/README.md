@@ -23,7 +23,9 @@ npm install bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-npx json-server --watch db.json --port 3001
+npx json-server --watch src/data/db.json --port 3001
+
+npm install lucide-react
 
 # Code up git
 

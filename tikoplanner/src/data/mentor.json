@@ -1,0 +1,216 @@
+[
+  {
+    "id": 1,
+    "name": "Ms. Thoa",
+    "role": "Design Systems Specialist",
+    "category": "Marketing",
+    "rating": 4.9,
+    "reviews": 120,
+    "avatar": "/assets/mentor/mentor1.png",
+    "desc": "Former Google Design Lead"
+  },
+  {
+    "id": 2,
+    "name": "Mr. Tấn",
+    "role": "Senior IT Consultant",
+    "category": "IT",
+    "rating": 4.8,
+    "reviews": 95,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor2.png",
+    "desc": "Cloud architect expert"
+  },
+  {
+    "id": 3,
+    "name": "Elena Xí Ken",
+    "category": "Marketing",
+    "role": "Marketing Strategist",
+    "rating": 5.0,
+    "reviews": 110,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor3.png",
+    "desc": "Growth hacking expert"
+  },
+  {
+    "id": 4,
+    "name": "Ms. Trang",
+    "category": "Finance",
+    "role": "Financial Analyst",
+    "rating": 4.7,
+    "reviews": 88,
+    "avatar": "/assets/mentor/mentor4.png",
+    "desc": "Investment banking veteran"
+  },
+  {
+    "id": 5,
+    "name": "Mr. Long",
+    "category": "IT",
+    "role": "Backend Engineer",
+    "rating": 4.6,
+    "reviews": 70,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor5.png",
+    "desc": "NodeJS & Microservices expert"
+  },
+  {
+    "id": 6,
+    "name": "Ms. Linh",
+    "category": "Design",
+    "role": "UI/UX Designer",
+    "rating": 4.9,
+    "reviews": 130,
+    "avatar": "/assets/mentor/mentor6.png",
+    "desc": "Product designer at startup unicorn"
+  },
+  {
+    "id": 7,
+    "name": "Mr. Minh",
+    "category": "Engineering",
+    "role": "Mechanical Engineer",
+    "rating": 4.5,
+    "reviews": 60,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor7.png",
+    "desc": "Automation systems specialist"
+  },
+  {
+    "id": 8,
+    "name": "Dr. Hương",
+    "category": "Healthcare",
+    "role": "Public Health Advisor",
+    "rating": 4.8,
+    "reviews": 90,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor8.png",
+    "desc": "WHO project consultant"
+  },
+  {
+    "id": 9,
+    "name": "Mr. Quân",
+    "category": "Finance",
+    "role": "Personal Finance Coach",
+    "rating": 4.9,
+    "reviews": 140,
+    "avatar": "/assets/mentor/mentor9.png",
+    "desc": "Wealth management expert"
+  },
+  {
+    "id": 10,
+    "name": "Ms. Phương",
+    "category": "Marketing",
+    "role": "Content Marketing Lead",
+    "rating": 4.6,
+    "reviews": 75,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor10.png",
+    "desc": "SEO & branding specialist"
+  },
+  {
+    "id": 11,
+    "name": "Mr. Dũng",
+    "category": "IT",
+    "role": "Mobile App Developer",
+    "rating": 4.7,
+    "reviews": 85,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor11.png",
+    "desc": "React Native & Flutter expert"
+  },
+  {
+    "id": 12,
+    "name": "Ms. Yến",
+    "category": "Design",
+    "role": "Graphic Designer",
+    "rating": 4.5,
+    "reviews": 55,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor12.png",
+    "desc": "Brand identity designer"
+  },
+  {
+    "id": 13,
+    "name": "Mr. Hòa",
+    "category": "Engineering",
+    "role": "Civil Engineer",
+    "rating": 4.4,
+    "reviews": 48,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor13.png",
+    "desc": "High-rise construction expert"
+  },
+  {
+    "id": 14,
+    "name": "Dr. Nam",
+    "category": "Healthcare",
+    "role": "Clinical Researcher",
+    "rating": 4.9,
+    "reviews": 102,
+    "avatar": "/assets/mentor/mentor14.png",
+    "desc": "Medical trials specialist"
+  },
+  {
+    "id": 15,
+    "name": "Ms. An",
+    "category": "Finance",
+    "role": "Risk Management Consultant",
+    "rating": 4.6,
+    "reviews": 67,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor15.png",
+    "desc": "Corporate risk advisor"
+  },
+  {
+    "id": 16,
+    "name": "Mr. Khoa",
+    "category": "IT",
+    "role": "DevOps Engineer",
+    "rating": 4.8,
+    "reviews": 92,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor16.png",
+    "desc": "AWS & CI/CD pipelines"
+  },
+  {
+    "id": 17,
+    "name": "Ms. Mai",
+    "category": "Marketing",
+    "role": "Digital Ads Specialist",
+    "rating": 4.7,
+    "reviews": 83,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor17.png",
+    "desc": "Facebook & Google Ads expert"
+  },
+  {
+    "id": 18,
+    "name": "Mr. Phúc",
+    "category": "Engineering",
+    "role": "Electrical Engineer",
+    "rating": 4.5,
+    "reviews": 58,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor18.png",
+    "desc": "Smart grid systems"
+  },
+  {
+    "id": 19,
+    "name": "Ms. Như",
+    "category": "Design",
+    "role": "Product Illustrator",
+    "rating": 4.8,
+    "reviews": 99,
+    "badge": "",
+    "avatar": "/assets/mentor/mentor19.png",
+    "desc": "Illustrations for SaaS products"
+  },
+  {
+    "id": 20,
+    "name": "Dr. Khánh",
+    "category": "Healthcare",
+    "role": "Mental Health Counselor",
+    "rating": 5.0,
+    "reviews": 150,
+    "avatar": "/assets/mentor/mentor20.png",
+    "desc": "Certified CBT therapist"
+  }
+]

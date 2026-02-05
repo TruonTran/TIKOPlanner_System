@@ -8,7 +8,7 @@ import {
 } from "react-icons/io5";
 
 import { login } from "../../controllers/authController";
-import "../style.css";
+import "./style.css";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ export default function Login() {
         localStorage.setItem("user", JSON.stringify(user));
 
         if (user.role === "admin") navigate("/admin");
-        else if (user.role === "mentor") navigate("/mentor");
+        else if (user.role === "mentor") navigate("/mentorHome");
         else navigate("/home");
     };
 

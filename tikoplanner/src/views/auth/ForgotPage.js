@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { IoMailOutline } from "react-icons/io5";
-import "../style.css";
+import "./style.css";
 
 export default function ForgotPassword() {
     const navigate = useNavigate();

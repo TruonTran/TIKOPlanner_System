@@ -5,7 +5,7 @@ import {
     IoEyeOutline,
     IoEyeOffOutline,
 } from "react-icons/io5";
-import "../style.css";
+import "./style.css";
 
 export default function NewPassPage() {
     const navigate = useNavigate();
